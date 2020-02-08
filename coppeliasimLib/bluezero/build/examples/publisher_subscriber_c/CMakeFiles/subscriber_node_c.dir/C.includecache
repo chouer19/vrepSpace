@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/b0/bindings/c.h
+stddef.h
+-
+inttypes.h
+-
+
+/home/chouer/workspace/vrep/coppeliasim/programming/bluezero/examples/publisher_subscriber_c/subscriber_node_c.c
+stdio.h
+-
+stdlib.h
+-
+b0/bindings/c.h
+-
+
