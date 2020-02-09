@@ -13,9 +13,9 @@ else()
     set(BUILD_STATIC_LIB_DEFAULT OFF)
 endif()
 option(BUILD_STATIC_LIB "Build static library" ${BUILD_STATIC_LIB_DEFAULT})
-option(BUILD_TOOLS "Build the tools (topic and service introspection, process manager...)" ON)
-option(BUILD_EXAMPLES "Build the examples" ON)
-option(BUILD_TESTS "Build the testcases" ON)
+option(BUILD_TOOLS "Build the tools (topic and service introspection, process manager...)" OFF)
+option(BUILD_EXAMPLES "Build the examples" OFF)
+option(BUILD_TESTS "Build the testcases" OFF)
 option(BUILD_GUI "Build gui programs" OFF)
 option(ENABLE_PROTOBUF "Protobuf support" OFF)
 option(BINDINGS_BOOST_PYTHON "Compile python bindings (using boost::python)" OFF)
@@ -51,7 +51,7 @@ if(WIN32)
 endif()
 
 find_package(Doxygen)
-find_package(Boost 1.54 REQUIRED COMPONENTS thread system regex timer filesystem serialization program_options)
+find_package(Boost REQUIRED COMPONENTS thread system regex timer filesystem serialization program_options)
 if(VCPKG_TOOLCHAIN)
     find_package(ZeroMQ CONFIG REQUIRED)
     set(ZMQ_LIBRARY libzmq)
@@ -300,156 +300,3 @@ if(WIN32 AND BUILD_STATIC_LIB)
 else()
     set(B0_LIBRARY ${B0_LIBRARY_SHARED})
 endif()
-
-#set_target_properties(
-#    b0
-#    PROPERTIES
-#    PUBLIC_HEADER
-#    "
-#    include/b0/b0.h
-#    include/b0/node.h
-#    include/b0/publisher.h
-#    include/b0/subscriber.h
-#    include/b0/service_client.h
-#    include/b0/service_server.h
-#    "
-#)
-
-add_executable(
-    b0_resolver
-    src/b0_resolver/resolver_main.cpp
-)
-target_link_libraries(b0_resolver ${B0_LIBRARY})
-
-if(BUILD_TOOLS)
-    add_executable(
-        b0_logger_monitor
-        src/b0_logger_monitor/logger_monitor.cpp
-    )
-    target_link_libraries(b0_logger_monitor ${B0_LIBRARY})
-
-    add_executable(
-        b0_graph_monitor
-        src/b0_graph_monitor/graph_monitor.cpp
-    )
-    target_link_libraries(b0_graph_monitor ${B0_LIBRARY})
-
-    add_executable(
-        b0_node_list
-        src/b0_node_list/node_list.cpp
-    )
-    target_link_libraries(b0_node_list ${B0_LIBRARY})
-
-    add_executable(
-        b0_topic_list
-        src/b0_topic_list/topic_list.cpp
-    )
-    target_link_libraries(b0_topic_list ${B0_LIBRARY})
-
-    add_executable(
-        b0_topic_echo
-        src/b0_topic_echo/topic_echo.cpp
-    )
-    target_link_libraries(b0_topic_echo ${B0_LIBRARY})
-
-    add_executable(
-        b0_topic_publish
-        src/b0_topic_publish/topic_publish.cpp
-    )
-    target_link_libraries(b0_topic_publish ${B0_LIBRARY})
-
-    add_executable(
-        b0_service_list
-        src/b0_service_list/service_list.cpp
-    )
-    target_link_libraries(b0_service_list ${B0_LIBRARY})
-
-    add_executable(
-        b0_service_call
-        src/b0_service_call/service_call.cpp
-    )
-    target_link_libraries(b0_service_call ${B0_LIBRARY})
-
-    add_executable(
-        b0_process_manager
-        src/b0_process_manager/process_manager.cpp
-    )
-    target_link_libraries(b0_process_manager ${B0_LIBRARY})
-    if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-        target_link_libraries(b0_process_manager dl)
-    endif()
-
-    add_executable(
-        b0_process_manager_hub
-        src/b0_process_manager/hub.cpp
-    )
-    target_link_libraries(b0_process_manager_hub ${B0_LIBRARY})
-
-    add_executable(
-        b0_system_monitor
-        src/b0_system_monitor/system_monitor.cpp
-    )
-    target_link_libraries(b0_system_monitor ${B0_LIBRARY})
-endif(BUILD_TOOLS)
-
-if(BUILD_GUI)
-    find_package(Qt5Core REQUIRED)
-    find_package(Qt5Gui REQUIRED)
-    find_package(Qt5Widgets REQUIRED)
-
-    add_executable(
-        b0_gui_logger_monitor
-        src/b0_gui_logger_monitor/gui_logger_monitor.cpp
-    )
-    target_link_libraries(b0_gui_logger_monitor ${B0_LIBRARY} Qt5::Core Qt5::Gui Qt5::Widgets)
-
-    add_executable(
-        b0_gui_graph_monitor
-        src/b0_gui_graph_monitor/gui_graph_monitor.cpp
-    )
-    target_link_libraries(b0_gui_graph_monitor ${B0_LIBRARY} Qt5::Core Qt5::Gui Qt5::Widgets)
-
-    add_executable(
-        b0_gui_process_manager
-        src/b0_gui_process_manager/main.cpp
-        src/b0_gui_process_manager/b0node.cpp
-        src/b0_gui_process_manager/nodesview.cpp
-        src/b0_gui_process_manager/mainwindow.cpp
-        src/b0_gui_process_manager/startnodedialog.cpp
-        src/b0_gui_process_manager/mainwindow.ui
-        src/b0_gui_process_manager/startnodedialog.ui
-    )
-    target_include_directories(
-        b0_gui_process_manager
-        PRIVATE
-        src
-        src/b0_gui_process_manager
-    )
-    target_link_libraries(b0_gui_process_manager ${B0_LIBRARY} Qt5::Core Qt5::Gui Qt5::Widgets)
-endif()
-
-#install(
-#    TARGETS b0
-#    RUNTIME DESTINATION bin
-#    LIBRARY DESTINATION lib
-#    ARCHIVE DESTINATION lib/static
-#    PUBLIC_HEADER DESTINATION include
-#)
-
-if(BUILD_EXAMPLES)
-    add_subdirectory(examples)
-endif()
-
-if(BUILD_TESTS)
-    enable_testing()
-    add_subdirectory(tests)
-endif()
-
-if(BINDINGS_BOOST_PYTHON)
-    add_subdirectory(bindings/python-boost)
-endif()
-
-if(BINDINGS_SWIG)
-    add_subdirectory(bindings)
-endif()
-

@@ -1,4 +1,4 @@
-#include "b0RemoteApi/b0RemoteApi.hpp"
+#include "b0RemoteApi.h"
 #ifdef _WIN32
 #include <windows.h>
 #else

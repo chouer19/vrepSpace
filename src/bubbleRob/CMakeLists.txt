@@ -9,7 +9,8 @@ set (plugins
 #endforeach (plugin ${plugins})
 
 #add_executable(bubbleRobB0Client b0RemoteApiClient.cpp b0RemoteApi.cpp)
-add_executable(bubbleRobB0Client b0RemoteApiClient.cpp ${B0REMOTEAPI_SRC})
-#target_link_libraries(bubbleRobB0Client ${Boost_LIBRARIES} ${B0_LIBRARY_SHARED} b0RemoteApi)
-target_link_libraries(bubbleRobB0Client ${Boost_LIBRARIES} ${B0_LIBRARY_SHARED} )
+message("b0RemoteApi srcs is : ${B0REMOTEAPI_SRCS}")
+message("b0 lib is : ${B0_LIBRARY_SHARED}")
+add_executable(bubbleRobB0Client b0RemoteApiClient.cpp ${B0REMOTEAPI_SRCS})
+target_link_libraries(bubbleRobB0Client ${Boost_LIBRARIES} b0 )
 
