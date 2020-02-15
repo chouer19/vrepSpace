@@ -50,7 +50,6 @@ if(WIN32)
     add_definitions(-DNOMINMAX)
 endif()
 
-find_package(Doxygen)
 find_package(Boost REQUIRED COMPONENTS thread system regex timer filesystem serialization program_options)
 if(VCPKG_TOOLCHAIN)
     find_package(ZeroMQ CONFIG REQUIRED)
@@ -65,33 +64,6 @@ if(ENABLE_PROTOBUF)
 endif()
 if(BINDINGS_JAVA)
     find_package(JNI REQUIRED)
-endif()
-
-if(DOXYGEN_FOUND)
-    # set input and output files
-    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/src/docs/Doxyfile.in)
-    set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/src/docs/Doxyfile)
-
-    # request to configure the file
-    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
-
-    # note the option ALL which allows to build the docs together with the application
-    add_custom_target(doc
-        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-        COMMENT "Generating API documentation with Doxygen"
-        VERBATIM)
-
-    set(DOCS_IN ${CMAKE_CURRENT_BINARY_DIR}/docs/html)
-    set(DOCS_OUT ${CMAKE_CURRENT_SOURCE_DIR}/docs)
-
-    add_custom_command(TARGET doc POST_BUILD
-        COMMAND rm -rf ${DOCS_OUT}
-        COMMAND cp -r ${DOCS_IN} ${DOCS_OUT}
-        COMMENT "Copying HTML docs to docs/ dir"
-        VERBATIM)
-else()
-    message("Doxygen need to be installed to generate the doxygen documentation")
 endif()
 
 if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/.git)

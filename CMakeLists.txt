@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.2)
+set (CMAKE_INSTALL_PREFIX "/home/chouer/workspace/vrep/coppeliasim"  CACHE PATH "Index Prefix." FORCE)
 project(vrepSimExt)
 
 # project var
@@ -10,6 +11,7 @@ set(PROJECT_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/include)
 #set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
+
 
 include(cmake/FindCoppeliaSim.cmake)
 include(cmake/FindBlueZero.cmake)
@@ -28,4 +30,4 @@ include_directories(${PROJECT_INCLUDE_DIR})
 include_directories(${COPPELIASIM_LIB_DIR}/simMath)
 
 add_subdirectory(plugins)
-add_subdirectory(src/bubbleRob)
+add_subdirectory(clients)
