@@ -2,6 +2,7 @@ project(plugins)
 set (plugins
   simExtVision
   simExtBubbleRob
+  simExtMtb
 )
 
 foreach (plugin ${plugins})
