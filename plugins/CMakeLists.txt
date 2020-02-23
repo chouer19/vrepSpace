@@ -3,6 +3,7 @@ set (plugins
   simExtVision
   simExtBubbleRob
   simExtMtb
+  simExtK3
 )
 
 foreach (plugin ${plugins})
